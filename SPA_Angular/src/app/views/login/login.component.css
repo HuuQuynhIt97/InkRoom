@@ -1,0 +1,11 @@
+
+  .login-page {
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("/assets/img/SSB-background.jpg");
+}
+.card-body.login-card-body {
+  background: rgba(238, 238, 238, 0.7);
+  border: 1px solid #DDD;
+}

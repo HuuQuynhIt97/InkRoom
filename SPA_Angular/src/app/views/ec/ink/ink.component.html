@@ -1,0 +1,231 @@
+<ngx-spinner bdColor ="rgba(174,171,171,0.8)" size = "medium" color = "#166cc1" type = "ball-climbing-dot" [fullScreen] = "true"><p style="color: white" > Loading... </p>
+</ngx-spinner>
+<div class="card">
+  <!-- <div class="card-header">
+    <h3 class="title">
+      Ingredient List
+    </h3>
+
+  </div> -->
+  <div class="card-body">
+    <div class="btn-group pb-3">
+      <button type="button" (click)="openInkModalComponent()" *ngIf="!show" class="btn btn-success">{{'ADD_LABEL' | translate}}</button>
+    </div>
+    <div class="btn-group pb-1">
+      <span style="color: transparent">|</span>
+    </div>
+    <div class="btn-group pb-3">
+      <button type="button" (click)="showModal(importModal)" *ngIf="!show" class="btn btn-success">{{'IMPORT_LABEL' | translate}} Excel</button>
+    </div>
+
+    <div class="btn-group pb-3" *ngIf="show">
+      <button type="button" (click)="backList()" class="btn btn-success ml-2">Back List</button>
+    </div>
+    <div class="btn-group pb-3" *ngIf="show">
+      <button type="button" (click)="printData()" class="btn btn-success ml-2"> <i class="fa fa-print"></i>
+        Print</button>
+    </div>
+
+    <div class="row" *ngIf="show">
+      <div class="col-xl-8">
+        <ejs-grid #printGrid
+          [dataSource]='dataPrint' rowHeight='38'
+          [allowSelection]='true'
+          [selectionSettings]="{ checkboxMode: 'ResetOnRowClick'}"
+          height='450'
+          [allowExcelExport]='true'
+          [editSettings]='editSettings'
+          (actionBegin)="actionBegin($event)"
+          (rowDeselected)='rowDeselected($event)'
+          (rowSelected)='rowSelected($event)'
+          [enableHover]='false'
+          [allowRowDragAndDrop]='true'
+          [toolbar]='toolbar'
+          (toolbarClick)='toolbarClickPrint($event)'
+          [rowDropSettings]="srcDropOptions"
+          [allowSorting]='true'>
+          <e-columns>
+            <e-column type='checkbox' isPrimaryKey='true' width='60'></e-column>
+            <e-column field='supplier' isPrimaryKey='true' headerText='Supplier' width='100'></e-column>
+            <e-column field='name' isPrimaryKey='true' headerText='Ink Name' width='100'></e-column>
+            <e-column field='batch' headerText='Batch' width='100'>
+            </e-column>
+            <e-column field='productionDate' type='date' format='yyyyMMdd'editType='datepickeredit' headerText='Production date' width='100'>
+              <ng-template #template let-data>{{data.productionDate | date: 'yyyyMMdd'}}</ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+      <div class="col-xl-4">
+        <table class="table table-hover" id="qrcode" height='450'>
+          <thead class="thead-dark">
+            <tr>
+              <th colspan="2">QR Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of dataPicked">
+              <tr *ngIf="dataPicked.length > 0">
+                <td class="text-center">
+                    <ejs-qrcodegenerator [id]='item.code' style="display: block;" [displayText]='displayTextMethod'
+                      width="177px" height="177px" mode="SVG"
+                      value="{{item.productionDate | date: 'yyyyMMdd'}}-{{item.batch}}-{{item.code}}"></ejs-qrcodegenerator>
+                </td>
+                <td class="text-algin-left">
+                    <div><label>Name:</label> {{item.name}}</div>
+                    <div><label>QR Code: </label> {{item.productionDate | date: 'yyyyMMdd'}}-{{item.batch}}-{{item.code}}</div>
+                    <div><label>MFG:</label> {{item.productionDate | date: 'yyyyMMdd'}}</div>
+                    <div><label>EXP:</label> {{item.exp}}</div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="!show">
+      <ejs-grid #InkGrid
+        rowHeight='38'
+        [dataSource]='dataInk'
+        [allowSelection]='true'
+        [allowSorting]='true'
+        [allowExcelExport]='true'
+        [allowSorting]='true'
+        allowFiltering='true'
+        [filterSettings]='filterSettings'
+        [toolbar]='toolbarOptions'
+        showColumnMenu='true'
+        [pageSettings]='pageSettings'
+        allowPaging="true"
+        allowResizing='true'
+        gridLines='Both'
+        (created)="createdSearch($event)"
+        (toolbarClick)='toolbarClick($event)'>
+        <e-columns>
+
+          <e-column field='#' headerText='#' width='40'>
+            <ng-template let-data #template>
+              {{NO(data.index)}}
+            </ng-template>
+          </e-column>
+
+          <e-column field='supplier' headerText='Supplier' textAlign='Center' width='100'>
+            <ng-template #headerTemplate let-data>
+              {{'SUPPLIER_LABEL' | translate}}
+            </ng-template>
+            <ng-template let-data #template>
+              <ejs-tooltip [content]="tooltip(data.supplier)">
+                {{data.supplier || '#N/A'}}
+              </ejs-tooltip>
+            </ng-template>
+          </e-column>
+
+          <e-column field='materialNO' headerText='Material #' textAlign='Center' width='100'></e-column>
+
+          <e-column field='name' headerText='Ink' textAlign='Center' width='120'>
+            <ng-template #headerTemplate let-data>
+              {{'INK_LABEL' | translate}}
+            </ng-template>
+            <ng-template #template let-data>
+              <ng-container *ngIf="locale === 'en'; else elseTemplate">
+                {{data.nameEn}}
+              </ng-container>
+              <ng-template #elseTemplate>
+                {{data.name}}
+              </ng-template>
+              
+            </ng-template>
+            
+          </e-column>
+
+          <e-column field='code' headerText='Code' textAlign='Center' width='120'></e-column>
+
+          <e-column field='process' headerText='Treatment' textAlign='Center' width='120'>
+            <ng-template #template let-data>
+              <span [style.background]="data.color" style="font-size: small; color: whitesmoke;" class="badge badge-pill">{{data.process}}</span>
+              
+            </ng-template>
+          </e-column>
+
+          <e-column field='voc' headerText='VOC' textAlign='Center' width='80'></e-column>
+
+          <e-column field='unit' headerText='Unit' textAlign='Center' width='100'>
+            <ng-template #headerTemplate let-data>
+              {{'UNIT_LABEL' | translate}}
+            </ng-template>
+            <ng-template #template let-data>{{data.unit}} kg</ng-template>
+          </e-column>
+
+          <e-column field='daysToExpiration' headerText='Days to Expiration' textAlign='Center' width='130'>
+
+            <ng-template #headerTemplate let-data>
+              {{'DAYEXP_LABEL' | translate}}
+            </ng-template>
+
+            <ng-template #template let-data>{{data.daysToExpiration}} days</ng-template>
+
+          </e-column>
+
+          <e-column field='Option' headerText='Option' textAlign='Center' width='130'>
+
+            <ng-template #headerTemplate let-data>
+              {{'OPTION' | translate}}
+            </ng-template>
+
+            <ng-template let-data #template >
+
+              <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Print QRCode">
+                <a routerLink="/ink/setting/ink/print-qrcode/{{data.id}}/{{data.code}}/{{data.name}}"
+                  class="btn btn-xs btn-success mr-2"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
+              </div>
+
+              <div class="btn-group">
+                <button type="button" (click)='openInkEditModalComponent(data)' class="btn btn-xs btn-primary"><i
+                  class="fa fa-edit"></i></button>
+              </div>
+
+              <div class="btn-group">
+                <span style="color: transparent">|</span>
+              </div>
+
+              <div class="btn-group">
+                <button type="button" (click)='delete(data)' class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+              </div>
+
+            </ng-template>
+          </e-column>
+
+        </e-columns>
+      </ejs-grid>
+
+    </div>
+
+  </div>
+</div>
+
+<ng-template #importModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fas fa-plus"></i> {{'IMPORT_LABEL' | translate}} Excel
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="Name">{{'SELECT_FILE' | translate}} (*{{'NOTICE_TEXT' | translate}}: {{'TEXT1' | translate}}, {{'TEXT2' | translate}} <a [href]="excelDownloadUrl">{{'TEXT3' | translate}}</a> {{'TEXT4' | translate}}!)</label>
+          <input (change)="fileProgress($event)" name="file" type="file" class="form-control" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="uploadFile()">{{'UPLOAD_LABEL' | translate}}</button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Close</button>
+  </div>
+
+</ng-template>

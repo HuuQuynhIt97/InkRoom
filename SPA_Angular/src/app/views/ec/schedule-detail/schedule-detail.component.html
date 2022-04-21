@@ -1,0 +1,357 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="col-md-12 card-body table-responsive" >
+        <!--  Model Name -->
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Model Name: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <input type="text" name="" disabled  class="form-control" [value]="modelName" required="required"
+              title="">
+          </div>
+
+        </div>
+        <!-- End Model Name -->
+
+        <!--  Model No -->
+
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Model NO: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <input type="text" name="" disabled  class="form-control" [value]="modelNo" required="required"
+              title="">
+          </div>
+          <div class="col-md-1 mt-2">
+          </div>
+        </div>
+        <!-- End Model No -->
+
+        <!-- Article No -->
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Article NO: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <input type="text" name="" disabled  class="form-control" [value]="articleNo" required="required"
+              title="">
+
+          </div>
+          <div class="col-md-1 mt-2">
+          </div>
+        </div>
+        <!-- End Article No -->
+
+        <!-- ArtProcess -->
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Treatment: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <button [style.background]="color" style="color: whitesmoke;" type="button" class="btn rounded-pill">{{ProcessName}}</button>
+          </div>
+          <div class="col-md-1 mt-2">
+          </div>
+        </div>
+        <!-- End Art Process -->
+
+        <!-- Object -->
+
+        <ng-container>
+          <ng-container *ngIf="ProcessName === 'Print'; else elseTemplate2">
+            <div class="row">
+              <div class="col-md-3 mt-2">
+                <label>Part: </label>
+              </div>
+              <div class="col-md-9 mt-2">
+                <button *ngFor="let item of partData; let i=index" 
+                  style="margin: 3px;" 
+                  type="button" 
+                  (click)="filterGlueByPart(item)"
+                  class="btn bg-gradient-primary btn-sm rounded-pill">
+                  {{item.name}} 
+                </button>
+                
+              
+              </div>
+             
+            </div>
+            
+          </ng-container>
+          <ng-template #elseTemplate2>
+            <div class="row">
+              <div class="col-md-3 mt-2">
+                <label>Process: </label>
+              </div>
+              <div class="col-md-9 mt-2">
+                <button
+                  type="button" 
+                  class="btn bg-gradient-primary btn-sm rounded-pill">
+                  {{ObjectName}}
+                </button>
+              </div>
+             
+            </div>
+          </ng-template>
+          
+        </ng-container>
+        
+        <!-- End Object -->
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-8" >
+    <div class="card" >
+      <div class="card-header">
+        <div class="card-tools">
+
+          <ng-container *ngIf="approveStatus; else elseTemplate">
+            <ejs-switch #switch onLabel="{{'DONE' | translate}}" (click)="done()" offLabel="{{'UNDONE' | translate}}"
+              style="width: 100px; margin-right: 10px;" [checked]="finishStatus" [disabled]="true">
+            </ejs-switch>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ejs-switch #switch onLabel="{{'DONE' | translate}}" (click)="done()" offLabel="{{'UNDONE' | translate}}"
+              style="width: 100px; margin-right: 10px;" [checked]="finishStatus">
+            </ejs-switch>
+          </ng-template>
+        
+
+          <ng-container *ngIf="RoleName === 'Admin' || RoleName === 'Supervisor'">
+            <ejs-switch onLabel="Approved" [checked]="approveStatus" (click)="approve()"
+              offLabel="{{'NOT_APPROVED' | translate}}" style="width: 120px;">
+            </ejs-switch>
+          </ng-container>
+
+          <button type="button" (click)='finished()' ejs-button cssClass="e-small e-success ml-2">
+            <i class="fas fa-save"></i> {{ 'FINISHED' | translate}}
+          </button>
+        </div>
+      </div>
+
+      <div  class="col-md-12 card-body table-responsive">
+        <!--  Model Name -->
+        <ejs-grid #grid
+          gridLines='Both'
+          [allowRowDragAndDrop]='true'
+          (rowDrop)="rowDrop($event)"
+          [toolbar]='toolbarOptions'
+          (actionBegin)="actionBeginPart($event)"
+          (rowDeselected)='rowDeselectedPart($event)'
+          (rowSelected)="rowSelected($event)"
+          [dataSource]='glueData'
+          allowPaging='true'
+          [allowSorting]='true'
+          allowResizing='true'
+          showColumnMenu='true'
+          autoFit='true'
+          (dataBound)='dataBoundPart()'
+          [pageSettings]='pageSettings'
+          (queryCellInfo)='tooltip($event)'
+          (toolbarClick)='toolbarClick($event)'
+          [editSettings]='editSettings'>
+          <e-columns>
+            <e-column  isPrimaryKey='true' headerTextAlign='center' textAlign='Center' headerText='#' width=40>
+              <ng-template let-data #template>{{NO(data.index)}}</ng-template>
+              <ng-template #editTemplate let-data>
+                {{NO(data.index)}}
+              </ng-template>
+
+            </e-column>
+
+            <e-column  headerText='Part' headerTextAlign='center' textAlign='Center'>
+              <ng-template #template let-data >{{data.part}}</ng-template>
+              <ng-template #editTemplate let-data>
+                <ejs-dropdownlist
+                  id='ddlelement2'
+                  [dataSource]='partData'
+                  popupHeight='200px'
+                  popupWidth='200px'
+                  [fields]='fieldsPosition'
+                  [allowFiltering]='true'
+                  [value]="data.partID"
+                  (change)='onChangePosition($event)'>
+                </ejs-dropdownlist>
+              </ng-template>
+
+            </e-column>
+
+            <e-column field='treatmentWay' headerText='Treatment Way' headerTextAlign='center' textAlign='Center'>
+              <ng-template #editTemplate let-data>
+                <ejs-dropdownlist
+                  id='ddlelement'
+                  [dataSource]='treatmentWayData'
+                  popupHeight='200px'
+                  popupWidth='200px'
+                  [fields]='fieldsPosition'
+                  [allowFiltering]='true'
+                  [value]="data.treatmentWayID"
+                  (change)='onChangeTreatmentWay($event)'>
+                </ejs-dropdownlist>
+              </ng-template>
+
+              
+              
+
+            </e-column>
+
+            <e-column field='name' headerText='Recipe' headerTextAlign='center' textAlign='left'>
+
+              <ng-template let-data #template>
+                <!-- <ejs-tooltip [content]="tooltips(data.name === '1' || data.name === null ? 'N/A' : data.name)">
+                </ejs-tooltip> -->
+                {{data.name === '1' || data.name === null ? 'N/A' : data.name}}
+                <!-- <ng-container *ngIf="data.name === '1' || data.name === null; else elseTemplate">
+                  N/A
+                </ng-container>
+                <ng-template #elseTemplate>
+                  {{data.name}}
+
+                </ng-template> -->
+              </ng-template>
+
+              <ng-template #editTemplate let-data>
+                <ng-container *ngIf="data.name === '1' || data.name === null; else elseTemplate">
+                  N/A
+                </ng-container>
+                <ng-template #elseTemplate>
+                  {{data.name}}
+                </ng-template>
+
+              </ng-template>
+            </e-column>
+
+            <!-- <e-column field='consumption'  textAlign='Center' headerText='Consumption' ></e-column> -->
+            <e-column field='consumption' headerTextAlign='center'  textAlign='Center' headerText='Total Consumption' >
+              <ng-template #editTemplate let-data>
+                {{data.consumption}}
+              </ng-template>
+            </e-column>
+
+          </e-columns>
+        </ejs-grid>
+
+
+        <!-- <div class="control-section">
+        </div> -->
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- preview -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="col-md-12 card-body table-responsive">
+        <div class="row">
+          <div class="col-md-12 mt-2 ">
+            <h3 class="card-title pr-2">
+              <span class="badge badge-info">{{'PREVIEW' | translate}} : </span>
+            </h3>
+            <span style="font-weight: bold;">{{textPreview}}</span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="col-md-12 card-body table-responsive">
+        <!--  Model Name -->
+        <div class="row">
+          <button type="button" (click)="ClickSub(0)" class="btn bg-gradient-secondary btn-sm rounded-pill">
+            {{ 'DEFAULT' | translate}}
+          </button>
+          <button type="button" *ngFor="let item of supData" style="margin: 3px" (click)="ClickSub(item)"
+            class="btn bg-gradient-info btn-sm rounded-pill">
+            <i class="fas fa-cannabis"></i> {{item.name}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+
+      <div class="col-md-12 card-body table-responsive" *ngIf="isShow">
+        <div class="row">
+          <div class="col-md-12">
+            <ejs-grid id="gridChemical" #gridChemical [dataSource]='chemicalData' allowPaging="true" [pageSettings]='pageSettingsChemical'
+              [editSettings]='editSettingss' [toolbar]='toolbarChemical' [allowSorting]='true' showColumnMenu='true'
+              allowSorting='true' allowResizing='true' autoFit='true' gridLines='Both' [selectedRowIndex]='rowIndex'
+              (toolbarClick)='ChemicalToolbarClick($event)'
+              (queryCellInfo)='queryCellInfoEvent($event)'
+              (dataBound)="dataBound($event)"
+              (cellEdit)="cellEdit($event)" 
+              (cellSave)="cellSave($event)"
+              (keydown)="keyHandler($event)"
+              >
+              <e-columns>
+
+                <e-column textAlign='Center' isPrimaryKey='true' width='50'>
+                  <ng-template #headerTemplate let-data>
+                    <span style="color: transparent;">aaaaaaa</span>
+                  </ng-template>
+                  <ng-template #template let-data>
+                    <p-checkbox [checked]="data.status" (change)="changeHandler($event,data)" color="success" animation="pulse" shape="curve" bigger="true">
+                      <i p-icon class="material-icons">done</i>
+                    </p-checkbox>
+                  </ng-template>
+
+                  <ng-template #editTemplate let-data>
+                    <p-checkbox [checked]="data.status" (change)="changeHandler($event,data)" color="success" animation="pulse" shape="curve" bigger="true">
+                      <i p-icon class="material-icons">done</i>
+                    </p-checkbox>
+                  </ng-template>
+                </e-column>
+
+                <e-column field='name' headerTextAlign='center'  textAlign='Left' width='100'>
+                  <ng-template #headerTemplate let-data>
+                    Ink/Chemical
+                  </ng-template>
+                  <ng-template #template let-data>
+                    {{data.name + ' ' + '(' + data.subname + ')'}}
+                  </ng-template>
+                  <ng-template #editTemplate let-data>
+                    {{data.name + ' ' + '(' + data.subname + ')'}}
+                  </ng-template>
+                </e-column>
+                <e-column field='code'  headerText='Code' textAlign='Center' width=60>
+                  <ng-template #template let-data>
+                    {{data.code}}
+                  </ng-template>
+                  <ng-template #editTemplate let-data>
+                    {{data.code}}
+                  </ng-template>
+                </e-column>
+
+                <e-column field='percentage' headerTextAlign='center'  headerText='%' textAlign='Center' width=60></e-column>
+
+                <e-column field='consumption' headerTextAlign='center' headerText='Consumption (G)' textAlign='Center' width=60>
+                  
+                </e-column>
+
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

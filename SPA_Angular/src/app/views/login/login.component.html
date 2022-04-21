@@ -1,0 +1,52 @@
+
+<ngx-spinner bdColor ="rgba(174,171,171,0.8)" size = "medium" color = "#166cc1" type = "ball-climbing-dot" [fullScreen] = "true">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>
+
+<div class="login-page">
+  <div class="login-box" style="margin-bottom: 30vh;">
+    <div class="card">
+      <div class="card-body login-card-body">
+        <h3 style="font-size: 20px;" class="text-muted">Ink Room System</h3>
+
+        <form (ngSubmit)="login()" #form="ngForm">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" [(ngModel)]="user.username" required name="username" placeholder="Account"/>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" [(ngModel)]="user.password" class="form-control" name="password" required placeholder="Password"/>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8">
+              <!-- <div class="icheck-primary">
+                <input type="checkbox" id="remember" />
+                <label for="remember">
+                  Remember Me
+                </label>
+              </div> -->
+            </div>
+            <div class="col-4">
+              <button type="submit" [disabled]="!form.valid" class="btn btn-primary btn-block">
+                Sign In
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

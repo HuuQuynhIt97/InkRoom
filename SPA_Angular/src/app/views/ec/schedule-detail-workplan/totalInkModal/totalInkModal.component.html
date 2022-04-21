@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4 class="modal-title">Items of Ink </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <ejs-grid #grid
+      id="gridAc"
+      [dataSource]='data'
+      [allowPaging]='true'
+      [allowResizing]='true'
+      [showColumnMenu]='true'
+       allowTextWrap='true'
+      gridLines='Both'
+      [pageSettings]='pageSettings'
+      >
+      <e-columns>
+        <e-column field='name' headerText='{{"Items of Ink" | translate}}' textAlign="center" type='string'>
+         
+          
+        </e-column>
+        <e-column field='consumption' headerText='{{"Consumption" | translate}}' textAlign="center" type='string'>
+          <ng-template #template let-data>
+            {{data.consumption + 'g'}}
+          </ng-template>
+        </e-column>
+   
+      </e-columns>
+    </ejs-grid>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal-footer d-flex justify-content-end">
+  <button type="button"
+  class="btn btn-secondary mr-2"
+
+  (click)="back()">{{'Save' }}
+</button>
+  <button type="button"
+  class="btn btn-success"
+
+  (click)="submit()">{{'Submit' }}</button>
+</div> -->
+<div class="modal-footer">
+  <div class="w-100">
+    <button type="button" (click)="activeModal.dismiss('Cross click')" class="btn btn-secondary mr-2 float-right">{{'Close' }}</button>
+  </div>
+</div>

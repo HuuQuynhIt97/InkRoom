@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{title}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <!-- <div class="form-group">
+    <input type="text" (keypress)="numberOnly($event)" [(ngModel)]="test" placeholder="Test" (blur)="onBlur($event)" class="form-control">
+  </div> -->
+  <div class="form-group">
+    <!-- <label for="">Ink</label> -->
+    <input type="text" [(ngModel)]="ink.name" placeholder="Enter Ink Name Local" (blur)="onBlur($event)" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="">Ink</label> -->
+    <input type="text" [(ngModel)]="ink.nameEn" placeholder="Enter Ink Name English" (blur)="onBlur($event)" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="">Code</label> -->
+    <input type="text" [(ngModel)]="ink.code" placeholder="Enter Code" (blur)="onBlur($event)" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="">VOC (%)</label> -->
+    <input type="text" [(ngModel)]="ink.voc" placeholder="Enter VOC (%)" (blur)="onBlur($event)" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="">Material #</label> -->
+    <input type="text" [(ngModel)]="ink.materialNO" placeholder="Enter Material #" (blur)="onBlur($event)" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="">Unit</label> -->
+    <input type="text" [(ngModel)]="ink.unit" placeholder="Enter Unit" (blur)="onBlur($event)" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <!-- <label for="">Days to Expiration</label> -->
+    <input type="text" [(ngModel)]="ink.daysToExpiration" placeholder="Enter Days to Expiration" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="">Treatment</label>
+      <ejs-dropdownlist
+        id='glueDropdownlist'
+        [dataSource]='ProcessData'
+        [fields]='fieldsProcess'
+        [allowFiltering]='true'
+        [value]="ink.processID"
+        (change)='onChangeProcess($event)'
+        [placeholder]='textProcess'>
+      </ejs-dropdownlist>
+  </div>
+  <div class="form-group">
+    <label for="">Supplier</label>
+      <ejs-dropdownlist
+        id='supDropdownlist'
+        [dataSource]='supplier'
+        [fields]='fieldsGlue'
+        [allowFiltering]='true'
+        [value]="ink.supplierID"
+        (change)='onChangeSup($event)'
+        [placeholder]='textGlue'>
+      </ejs-dropdownlist>
+  </div>
+  <div class="form-group d-none">
+    <label for="">Code</label>
+    <input type="text" class="form-control">
+  </div>
+</div>
+<div class="modal-footer justify-content-between">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+</div>
+

@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="e-input-group">
+          <input class="e-input" readonly type="text" [value]="recipe" placeholder="" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <ejs-datepicker (change)='onChangeProductionDate($event)' format='yyyyMMdd' placeholder="Production Date"
+        [(ngModel)]="mfgTemp"  floatLabelType='Never'></ejs-datepicker>
+      </div>
+      <div class="col-md-2">
+        <div class="e-input-group">
+          <input class="e-input" type="text" (ngModelChange)="onChangeBatch($event)" [(ngModel)]="ink" placeholder="Enter Ink..." />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="e-input-group">
+          <input [(ngModel)]="qty" class="e-input"  type="text" placeholder="" />
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="text-center">
+          <button (click)='printData()' class="btn btn-sm btn-success"><i class="fa fa-print"></i> Print</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>
+<hr>
+<div class="row">
+<div class="col-md-4"></div>
+<div class="col-md-4 text-left">
+  <div class='center '>
+    <ejs-qrcodegenerator style="display: block;" id='qrcode' #barcode
+    width="100px" height="130px" [displayText]='displayTextMethod' mode="SVG" [value]="qrcode"></ejs-qrcodegenerator>
+  </div>
+  <div><label>ModelName: </label> {{data.modelName}}</div>
+  <div><label>Article#: </label> {{data.article}}</div>
+  <div><label>Receipe:</label> {{recipe}}</div>
+  <div><label>Part:</label> {{data.part}}</div>
+  <div><label>Ink Name:</label> {{ink}}</div>
+  <div><label>MFG:</label> {{mfg}}</div>
+  <div><label>EXP:</label> {{exp}}</div>
+  <div><label>KG:</label> {{qty}}</div>
+</div>
+<div class="col-md-4"></div>
+</div>

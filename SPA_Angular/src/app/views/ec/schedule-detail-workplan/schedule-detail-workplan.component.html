@@ -1,0 +1,318 @@
+<ngx-spinner bdColor ="rgba(174,171,171,0.8)" size = "medium" color = "#166cc1" type = "ball-climbing-dot" [fullScreen] = "true"><p style="color: white" > Loading... </p>
+</ngx-spinner>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="col-md-12 card-body table-responsive">
+        <!--  Model Name -->
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Model Name: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <input type="text" name="" disabled  class="form-control" [value]="modelName" required="required"
+              title="">
+          </div>
+
+        </div>
+        <!-- End Model Name -->
+
+        <!--  Model No -->
+
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Model NO: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <input type="text" name="" disabled  class="form-control" [value]="modelNo" required="required"
+              title="">
+          </div>
+          <div class="col-md-1 mt-2">
+          </div>
+        </div>
+        <!-- End Model No -->
+
+        <!-- Article No -->
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Article NO: </label>
+          </div>
+          <div class="col-md-8 mt-2">
+            <input type="text" name="" disabled  class="form-control" [value]="articleNo" required="required"
+              title="">
+
+          </div>
+          <div class="col-md-1 mt-2">
+          </div>
+        </div>
+        <!-- End Article No -->
+
+        <!-- ArtProcess -->
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <label>Treatment: </label>
+          </div>
+          <div class="col-md-6 mt-2">
+            <button type="button" style="color: whitesmoke;" [style.background]="colorName" class="btn rounded-pill">{{ProcessName}}</button>
+          </div>
+
+          <ng-container *ngIf="treatment === 'Print' && showQrcode ; else elseTemplate">
+            <div class="col-md-3 mt-2" >
+              <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Print QRCode">
+                <a target="blank" (click)="goToPrintGlue(inkParam)"  style="font-size: 30px;" class="btn btn-xs btn-success mr-3">
+                  <i class="fa fa-qrcode" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <ng-container *ngIf="treatment !== 'Print'; else elseTemplate">
+              <div class="col-md-3 mt-2" >
+                <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Print QRCode">
+                  <a target="blank" (click)="goToPrintQrCode()"  style="font-size: 30px;" class="btn btn-xs btn-success mr-3">
+                    <i class="fa fa-qrcode" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #elseTemplate>
+              
+            </ng-template>
+            
+            
+          </ng-template>
+          
+          
+         
+        </div>
+        <!-- End Art Process -->
+        <ng-container>
+          <ng-container *ngIf="ProcessName === 'Print'; else elseTemplate2">
+            <div class="row">
+              <div class="col-md-3 mt-2">
+                <label>Part: </label>
+              </div>
+              <div  class="col-md-9 mt-2">
+              <button  *ngFor="let item of partData; let i=index"
+                [style.background-color]="item.status ? '#4dbd74' : '#007bff'"
+                style="margin: 3px;" 
+                type="button" 
+                (click)="filterGlueByPartDefault(item)"
+                class="myButton btn btn-primary btn-sm rounded-pill">
+                {{item.name}} 
+              </button>
+              <!-- <div *ngFor="let item of partData; let i=index">
+                <button *ngIf="item.status" [style.background-color]="'#4dbd74'" type="button" (click)="filterGlueByPart(item)" class="btn bg-gradient-primary btn-sm rounded-pill"  >
+                  {{item.name}} 
+                </button>
+                <button *ngIf="!item.status" [style.background-color]="'#20a8d8'" type="button" (click)="filterGlueByPart(item)" class="btn bg-gradient-primary btn-sm rounded-pill"  >
+                  {{item.name}} 
+                </button>
+              </div> -->
+              
+              </div>
+             
+            </div>
+            
+          </ng-container>
+          <ng-template #elseTemplate2>
+            <div class="row">
+              <div class="col-md-3 mt-2">
+                <label>Process: </label>
+              </div>
+              <div class="col-md-9 mt-2">
+                <button
+                  type="button" 
+                  class="btn bg-gradient-primary btn-sm rounded-pill">
+                  {{ObjectName}}
+                </button>
+              </div>
+             
+            </div>
+          </ng-template>
+          
+        </ng-container>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div  class="col-md-12 card-body table-responsive">
+        <!--  Model Name -->
+        <ejs-grid #grid
+          gridLines='Both'
+          (rowSelected)="rowSelected($event)"
+          [dataSource]='POdata'
+          allowPaging='true'
+          [allowSorting]='true'
+          allowResizing='true'
+          showColumnMenu='true'
+          autoFit='true'
+          (dataBound)="dataBound($event)"
+          [pageSettings]='pageSettings'
+          (queryCellInfo)='tooltip($event)'
+          >
+          <e-columns>
+
+            <e-column field=''  textAlign='center'  headerText='Done' >
+              <ng-template #template let-data>
+                <ejs-switch #switch onLabel="{{'DONE' | translate}}" offLabel="{{'UNDONE' | translate}}"
+                  style="width: 100px;" (click)="updatePart(data)" [checked]="data.partStatus">
+                </ejs-switch>
+              </ng-template>
+              
+            </e-column>
+
+            <!-- <e-column field=''  textAlign='center'  headerText='Done' >
+              <ng-template #template let-data>
+                <ejs-switch #switch onLabel="{{'DONE' | translate}}" offLabel="{{'UNDONE' | translate}}"
+                  style="width: 100px;" (click)="updatePoGlue(data)" [checked]="data.status">
+                </ejs-switch>
+              </ng-template>
+              
+            </e-column> -->
+            <!-- <e-column field='' headerText='QR Code' width="120" headerTextAlign='Center' textAlign='Center'>
+              <ng-template #template let-data>
+                <div class="btn-group" data-toggle="tooltip" data-placement="top" title="Print QRCode">
+                  <a target="blank" routerLink="print-qrcode/{{data.id}}"
+                    class="btn btn-xs btn-success mr-2"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
+                </div>
+              </ng-template>
+            </e-column> -->
+            <e-column field='line' headerText='Line' headerTextAlign='Center' textAlign='Center'></e-column>
+            <e-column field='name'  headerTextAlign='center' headerText='PO No.' textAlign='Center'></e-column>
+            <e-column field='qty'  headerTextAlign='center' headerText='Qty.' textAlign='Center'></e-column>
+            <!-- <e-column field='glueName'  textAlign='Left' headerText='Chemical' > </e-column> -->
+          </e-columns>
+        </ejs-grid>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- preview -->
+<!-- <div class="row" *ngIf="particular">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="col-md-12 card-body table-responsive">
+        <div class="row">
+
+          <div  class="col-md-12 mt-2 ">
+            <ng-container *ngIf="ProcessName === 'Print'; else elseTemplate">
+              <ejs-grid #gridParticular
+                gridLines='Both'
+                [dataSource]='particularData'
+                [allowSorting]='true'
+                allowResizing='true'
+                allowTextWrap='true'
+                showColumnMenu='true'
+                autoFit='true'
+                (queryCellInfo)='tooltip($event)'
+                >
+                <e-columns>
+                  <e-column field='name' headerText='Particular' textAlign='Center'> 
+                    <ng-template #template let-data>
+                      <textarea autosize  type="text" class="form-control" readonly [(ngModel)]="data.name"  name="name"  style="text-align:left;" ></textarea>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <ejs-grid #gridParticular
+                gridLines='Both'
+                (rowSelected)="rowSelectedParticular($event)"
+                [dataSource]='particularData'
+                [allowSorting]='true'
+                allowResizing='true'
+                allowTextWrap='true'
+                showColumnMenu='true'
+                autoFit='true'
+                (queryCellInfo)='tooltip($event)'
+                >
+                <e-columns>
+                  <e-column field='name' headerText='Particular' textAlign='Center'> 
+                    <ng-template #template let-data>
+                      <textarea autosize  type="text" class="form-control" readonly [(ngModel)]="data.name"  name="name"  style="text-align:left;" ></textarea>
+                    </ng-template>
+                  </e-column>
+                </e-columns>
+              </ejs-grid>
+            </ng-template>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div> -->
+
+<!-- preview -->
+<div class="row" *ngIf="checked">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="col-md-12 card-body table-responsive">
+        <div class="row">
+
+          <div  class="col-md-12 mt-2 ">
+            <ejs-grid #gridTreetment
+              gridLines='Both'
+              [dataSource]='glueData'
+              (dataBound)="dataBoundTreetment()"
+              allowPaging='true'
+              [allowSorting]='true'
+              allowResizing='true'
+              showColumnMenu='true'
+              autoFit='true'
+              (recordDoubleClick)="doubleClick($event)"
+              [pageSettings]='pageSettings'
+              (queryCellInfo)='tooltipTreetment($event)'
+              >
+              <e-columns>
+                
+                <e-column  isPrimaryKey='true' textAlign='Center' headerText='#' width=40>
+                  <ng-template let-data #template>{{NO(data.index)}}</ng-template>
+                  <ng-template #editTemplate let-data>
+                    {{NO(data.index)}}
+                  </ng-template>
+
+                </e-column>
+
+                <e-column field='building' headerText='Building' textAlign='Center'>
+                 
+                </e-column>
+
+                <!-- <e-column field='treatmentWay' headerText='Treatment Way' textAlign='Center'>
+                 
+                </e-column>
+
+                <e-column field='name' headerText='Recipe' textAlign='left'>
+                  
+                </e-column> -->
+
+
+                <e-column field='totalInk'  textAlign='Center' headerText='Total Ink (kg)' >
+                 
+                </e-column>
+
+                <e-column field='totalChemical'  textAlign='Center' headerText='Total Chemical (kg)' >
+                 
+                </e-column>
+
+              </e-columns>
+            </ejs-grid>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

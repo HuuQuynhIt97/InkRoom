@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <ejs-grid #grid (actionBegin)="actionBegin($event)" gridLines='Both' (onDoubleClick)='onDoubleClick($event)'
+        (actionComplete)='actionComplete($event)' (rowDeselected)='rowDeselected($event)' [toolbar]='toolbarOptions'
+        [dataSource]='supplier' allowPaging='true' [allowSorting]='true' allowResizing='true' showColumnMenu='true'
+        [allowExcelExport]='true' allowFiltering='true' [filterSettings]='filterSettings' [pageSettings]='pageSettings'
+        (dataBound)='dataBound()' (toolbarClick)='toolbarClick($event)' [editSettings]='editSettings'>
+        <e-columns>
+          <e-column field='id' isPrimaryKey="true" headerText='#' width='70' textAlign='Center'>
+            <ng-template #template let-data>
+              {{NO(data.index)}}
+            </ng-template>
+
+          </e-column>
+          <e-column field='name' headerText='Supplier Name' width='200' textAlign='Center'>
+            <ng-template #headerTemplate let-data>
+              {{'SUPPLIER_NAME' | translate}}
+            </ng-template>
+          </e-column>
+          <e-column field='process' headerText='Treatment' width='200' textAlign='Center'>
+
+            <ng-template #editTemplate let-data>
+              <ejs-dropdownlist #buildingNameDropdownlist [dataSource]='ProcessData' [value]="data.processID"
+                popupHeight='200px' popupWidth='250px' [fields]='fieldsSup' [allowFiltering]='true'
+                (change)='onChangeSupplier($event)'>
+              </ejs-dropdownlist>
+            </ng-template>
+
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
+</div>
