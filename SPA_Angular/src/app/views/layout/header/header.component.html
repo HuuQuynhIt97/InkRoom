@@ -57,10 +57,21 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" [routerLink]="[ '/ink/execution/stock']">Stock</a>
             <a class="dropdown-item" [routerLink]="[ '/ink/execution/work-plan']">Work Plan</a>
-            <!-- <a class="dropdown-item" [routerLink]="[ '/ink/establish/schedule-status']">Schedule Status</a> -->
-            <!-- <a class="dropdown-item" [routerLink]="[ '/ec/establish/bpfc']">{{ 'BPFC' | translate }}</a> -->
           </div>
         </li>
+
+        <!-- Dispatch -->
+        <li class="nav-item dropdown" *ngIf="level === ADMIN || level === SUPERVISOR || level === STAFF || level === WORKER">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+             Dispatch
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" [routerLink]="[ '/ink/dispatch/setting-workplan']">{{ 'SETTING_WORKPLAN_MENU_LABEL' | translate }}</a>
+            <a class="dropdown-item" [routerLink]="[ '/ink/dispatch/work-list']">{{ 'WORK_LIST_MENU_LABEL' | translate }}</a>
+          </div>
+        </li>
+
 
         <!-- manager -->
         <!-- <li class="nav-item dropdown"

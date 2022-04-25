@@ -1,3 +1,5 @@
+import { WorkListComponent } from './work-list/work-list.component';
+import { SettingWorkplanComponent } from './setting-workplan/setting-workplan.component';
 import { TotalChemicalModalComponent } from './schedule-detail-workplan/totalChemicalModal/totalChemicalModal.component';
 import { TotalInkModalComponent } from './schedule-detail-workplan/totalInkModal/totalInkModal.component';
 import { PrintQrcodeGlueWorkplanComponent } from './schedule-detail-workplan/print-qrcode-glue-workplan/print-qrcode-glue-workplan.component';
@@ -149,7 +151,9 @@ if (lang) {
     PrintQrcodeWorkplanComponent,
     PrintQrcodeGlueWorkplanComponent,
     TotalInkModalComponent,
-    TotalChemicalModalComponent
+    TotalChemicalModalComponent,
+    SettingWorkplanComponent,
+    WorkListComponent
   ]
 })
 export class ECModule { }

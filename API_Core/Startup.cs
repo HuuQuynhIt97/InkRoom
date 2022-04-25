@@ -165,6 +165,7 @@ namespace INK_API
             services.AddScoped<IWorkPlanService, WorkPlanService>();
             services.AddScoped<IWorkPlanMasterService, WorkPlanMasterService>();
             services.AddScoped<IPoGlueService, PoGlueService>();
+            services.AddScoped<ISettingWorkPlanService, SettingWorkPlanService>();
             // services.AddScoped<IGlueService, GlueService>();
 
             //extension

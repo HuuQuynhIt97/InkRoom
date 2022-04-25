@@ -166,15 +166,16 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.currentTime = moment().format('LTS');
   }
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('avatar');
-    localStorage.removeItem('level');
-    localStorage.removeItem('role');
-    localStorage.removeItem('details');
-    localStorage.removeItem('lang');
-    localStorage.removeItem('ScaleMachine');
-    localStorage.removeItem('detailsTamp');
+    localStorage.clear();
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('user');
+    // localStorage.removeItem('avatar');
+    // localStorage.removeItem('level');
+    // localStorage.removeItem('role');
+    // localStorage.removeItem('details');
+    // localStorage.removeItem('lang');
+    // localStorage.removeItem('ScaleMachine');
+    // localStorage.removeItem('detailsTamp');
     this.authService.decodedToken = null;
     this.authService.currentUser = null;
     this.alertify.message('Logged out');

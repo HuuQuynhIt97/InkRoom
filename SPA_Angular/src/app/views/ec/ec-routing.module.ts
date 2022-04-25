@@ -1,3 +1,5 @@
+import { WorkListComponent } from './work-list/work-list.component';
+import { SettingWorkplanComponent } from './setting-workplan/setting-workplan.component';
 import { PrintQrcodeGlueWorkplanComponent } from './schedule-detail-workplan/print-qrcode-glue-workplan/print-qrcode-glue-workplan.component';
 import { ScheduleDetailWorkplanComponent } from './schedule-detail-workplan/schedule-detail-workplan.component';
 import { ProcessComponent } from './process/process.component';
@@ -298,6 +300,42 @@ const routes: Routes = [
         ]
       },
       // end execution
+
+      // dispatch
+      {
+        path: 'dispatch',
+        data: {
+          title: 'Dispatch',
+          breadcrumb: 'Dispatch'
+        },
+        children: [
+
+          {
+            path: 'setting-workplan',
+            // component: SummaryComponent,
+            data: {
+              title: 'Setting WorkPlan',
+              breadcrumb: 'Setting WorkPlan'
+            },
+            children: [
+              {
+                path: '',
+                component: SettingWorkplanComponent,
+              },
+            ]
+          },
+
+          {
+            path: 'work-list',
+            component: WorkListComponent,
+            data: {
+              title: 'Work list',
+              breadcrumb: 'Work list'
+            },
+          }
+
+        ]
+      },
 
     ]
   }

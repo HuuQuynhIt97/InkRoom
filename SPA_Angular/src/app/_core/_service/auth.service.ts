@@ -31,9 +31,11 @@ export class AuthService {
           this.decodedToken = this.jwtHelper.decodeToken(data.token);
           this.currentUser = data.user.User;
           this.getBuildingByUserID(data.user.User.ID).subscribe((res: any) => {
+            console.log(res);
             res = res || {};
             localStorage.setItem('level', JSON.stringify(res));
             localStorage.setItem('building', JSON.stringify(res.name) ?? null) ;
+            localStorage.setItem('buildingID', JSON.stringify(res.id) ?? "0") ;
             this.levelSource.next(res);
           });
           this.getRoleByUserID(data.user.User.ID).subscribe((res: any) => {
